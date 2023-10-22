@@ -8,6 +8,7 @@ namespace BusinessLayer.Models
 {
     public class Commands
     {
-
+        public string? Message { get; set; }
+        public string ContactList { get; set; }
     }
 }

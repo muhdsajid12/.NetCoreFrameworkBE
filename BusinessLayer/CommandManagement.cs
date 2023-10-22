@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer;
+using BusinessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer
 {
@@ -27,6 +29,30 @@ namespace BusinessLayer
                 });
                 ctx.SaveChanges();
                 return true;
+            }
+        }
+
+        public static async Task GetAutoCommandList() 
+        {
+            using (var ctx = new YamurDbContext()) 
+            {
+                var list = ctx.DtCommands.Where(q => q.Auto == true && q.Deleted == false)
+                    .Select(q => new Commands() 
+                    {
+                      Message = q.Message
+                    })
+                    .ToList(); // check for auto command
+
+            }
+        }
+
+        public static async Task<List<double?>> GetIntervalCommandList()
+        {
+            using (var ctx = new YamurDbContext())
+            {
+                return await ctx.DtCommands.Where(q => q.Auto == true && q.Deleted == false).Select(q => q.IntervalTime)
+                    .ToListAsync(); // check for auto command
+
             }
         }
     }
