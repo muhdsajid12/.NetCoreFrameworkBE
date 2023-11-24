@@ -22,5 +22,27 @@ namespace BusinessLayer
             }
         }
 
+        public static async Task<bool> Register(string username, string password)
+        {
+            using (var ctx = new YamurDbContext())
+            {
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                    return false;
+
+
+                // password Hashing & Salt
+
+                ctx.DtUsers.Add(new DtUser()
+                {
+                    Username = username,
+                    Token = password,
+                    CreatedDate = DateTime.Now
+                });
+                ctx.SaveChanges();
+
+                return true;
+            }
+        }
+
     }
 }

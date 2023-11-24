@@ -15,5 +15,23 @@ namespace YamurBEPOC.Controllers
         {
             return UserManagement.GetUser();
         }
+
+        // POST: api/TodoItems
+        [HttpPost("Register")]
+        public async Task<Result> Register([FromBody] UserInput input)
+        {
+            var res = new Result();
+
+            res.Success = await UserManagement.Register(input.Username, input.Password);
+
+            return res;
+        }
     }
+}
+
+public class UserInput 
+{
+    public string Username { get; set; }
+    public string Password { get; set; }
+
 }
