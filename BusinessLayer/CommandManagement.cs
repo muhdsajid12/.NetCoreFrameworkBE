@@ -11,7 +11,7 @@ namespace BusinessLayer
 {
     public class CommandManagement
     {
-        public static async Task<bool> AddCommandAsync(int userId, string message, float? intervalTime = null, bool? auto = null)
+        public static async Task<bool> AddCommandAsync(int userId, string message, double? intervalTime = null, bool? auto = null)
         {
             using (var ctx = new YamurDbContext())
             {
@@ -46,13 +46,12 @@ namespace BusinessLayer
             }
         }
 
-        public static async Task<List<double?>> GetIntervalCommandList()
+        public static async Task<Dictionary<double,int>> GetIntervalCommandList()
         {
             using (var ctx = new YamurDbContext())
             {
-                return await ctx.DtCommands.Where(q => q.Auto == true && q.Deleted == false).Select(q => q.IntervalTime)
-                    .ToListAsync(); // check for auto command
-
+                return await ctx.DtCommands.Where(q => q.Auto == true && q.Deleted == false && q.IntervalTime.HasValue).OrderBy(q => TimeSpan.FromSeconds(q.IntervalTime.Value))
+                    .ToDictionaryAsync(q => q.IntervalTime.Value, q => q.UserId); // check for auto command
             }
         }
     }
