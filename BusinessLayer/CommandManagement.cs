@@ -54,5 +54,56 @@ namespace BusinessLayer
                     .ToDictionaryAsync(q => q.IntervalTime.Value, q => q.UserId); // check for auto command
             }
         }
+
+        public static async Task<DtCommand?> GetCommandById(int Id) 
+        {
+            using (var ctx = new YamurDbContext())
+            {
+                return await ctx.DtCommands.Where(q => q.CommandId == Id)?.FirstOrDefaultAsync(); // check for auto command
+            }
+
+        }
+
+        public static async Task<string> UpdateCommand(int userId, int commandId, string message)
+        {
+            using (var ctx = new YamurDbContext())
+            {
+                if (userId == 0)
+                    return $"User not found Id : {userId}";
+
+                if (commandId == 0)
+                    return $"Invalid Command Id : {commandId}";
+
+                DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == Id)?.FirstOrDefaultAsync();
+                if (command == null)
+                    return $"Command Id : {commandId} not found";
+
+                command.Message = message;
+                ctx.SaveChanges();
+
+                return "Successfully updated";
+            }
+        }
+
+        public static async Task<string> DeleteCommand(int userId, int commandId)
+        {
+            using (var ctx = new YamurDbContext())
+            {
+                if (userId == 0)
+                    return $"User not found Id : {userId}";
+
+                if (commandId == 0)
+                    return $"Invalid Command Id : {commandId}";
+
+                DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == Id)?.FirstOrDefaultAsync();
+                if (command == null)
+                    return $"Command Id : {commandId} not found";
+
+                command.Deleted = true;
+                ctx.SaveChanges();
+
+                return "Successfully deleted";
+            }
+        }
     }
 }
