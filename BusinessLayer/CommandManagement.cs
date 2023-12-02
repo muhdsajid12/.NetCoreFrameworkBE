@@ -59,7 +59,7 @@ namespace BusinessLayer
         {
             using (var ctx = new YamurDbContext())
             {
-                return await ctx.DtCommands.Where(q => q.CommandId == Id)?.FirstOrDefaultAsync(); // check for auto command
+                return await ctx.DtCommands.Where(q => q.CommandId == Id).FirstOrDefaultAsync(); // check for auto command
             }
 
         }
@@ -74,7 +74,7 @@ namespace BusinessLayer
                 if (commandId == 0)
                     return $"Invalid Command Id : {commandId}";
 
-                DtCommand command = await ctx.DtCommands.Where(q => q.CommandId == commandId)?.FirstOrDefaultAsync();
+                DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == commandId).FirstOrDefaultAsync();
                 if (command == null)
                     return $"Command Id : {commandId} not found";
 
@@ -95,7 +95,7 @@ namespace BusinessLayer
                 if (commandId == 0)
                     return $"Invalid Command Id : {commandId}";
 
-                DtCommand command = await ctx.DtCommands.Where(q => q.CommandId == commandId)?.FirstOrDefaultAsync();
+                DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == commandId).FirstOrDefaultAsync();
                 if (command == null)
                     return $"Command Id : {commandId} not found";
 

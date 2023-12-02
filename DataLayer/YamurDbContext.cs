@@ -19,16 +19,14 @@ public partial class YamurDbContext : DbContext
 
     public virtual DbSet<DtCommandGroup> DtCommandGroups { get; set; }
 
+    public virtual DbSet<DtCredit> DtCredits { get; set; }
+
     public virtual DbSet<DtMessage> DtMessages { get; set; }
 
     public virtual DbSet<DtUser> DtUsers { get; set; }
 
     public virtual DbSet<DtUserContact> DtUserContacts { get; set; }
 
-    /// <summary>
-    /// PMC command to override db (update): Scaffold-DbContext 'Data Source=LAPTOP-2UUI3IBH\SQLEXPRESS;Initial Catalog=YamurDB;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True' Microsoft.EntityFrameworkCore.SqlServer -f
-    /// </summary>
-    /// <param name="optionsBuilder"></param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=LAPTOP-2UUI3IBH\\SQLEXPRESS;Initial Catalog=YamurDB;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True");
@@ -53,6 +51,13 @@ public partial class YamurDbContext : DbContext
 
             entity.Property(e => e.CreateadDate).HasColumnType("datetime");
             entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<DtCredit>(entity =>
+        {
+            entity.HasKey(e => e.CreditId);
+
+            entity.ToTable("DT_Credit");
         });
 
         modelBuilder.Entity<DtMessage>(entity =>
