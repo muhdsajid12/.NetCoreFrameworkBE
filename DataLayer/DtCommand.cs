@@ -15,6 +15,8 @@ public partial class DtCommand
 
     public double? IntervalTime { get; set; }
 
+    public string? Receiver { get; set; }
+
     public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }

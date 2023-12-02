@@ -55,7 +55,7 @@ namespace BusinessLayer
             }
         }
 
-        public static async Task<DtCommand?> GetCommandById(int Id) 
+        public static async Task<DtCommand> GetCommandById(int Id) 
         {
             using (var ctx = new YamurDbContext())
             {
@@ -74,7 +74,7 @@ namespace BusinessLayer
                 if (commandId == 0)
                     return $"Invalid Command Id : {commandId}";
 
-                DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == Id)?.FirstOrDefaultAsync();
+                DtCommand command = await ctx.DtCommands.Where(q => q.CommandId == commandId)?.FirstOrDefaultAsync();
                 if (command == null)
                     return $"Command Id : {commandId} not found";
 
@@ -95,7 +95,7 @@ namespace BusinessLayer
                 if (commandId == 0)
                     return $"Invalid Command Id : {commandId}";
 
-                DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == Id)?.FirstOrDefaultAsync();
+                DtCommand command = await ctx.DtCommands.Where(q => q.CommandId == commandId)?.FirstOrDefaultAsync();
                 if (command == null)
                     return $"Command Id : {commandId} not found";
 
