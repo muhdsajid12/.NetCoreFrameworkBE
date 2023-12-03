@@ -39,6 +39,7 @@ public partial class YamurDbContext : DbContext
 
             entity.ToTable("DT_Command");
 
+            entity.Property(e => e.CommandDate).HasColumnType("datetime");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

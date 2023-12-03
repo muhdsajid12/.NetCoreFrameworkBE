@@ -15,20 +15,27 @@ namespace BusinessLayer
         {
             using (var ctx = new YamurDbContext())
             {
-                if (userId == 0 || string.IsNullOrEmpty(message))
-                    return false;
-
-                ctx.DtCommands.Add(new DtCommand()
+                try
                 {
-                    UserId = userId,
-                    Message = message,
-                    IntervalTime = intervalTime,
-                    Auto = auto,
-                    CreatedBy = userId,
-                    CreatedDate = DateTime.Now
-                });
-                ctx.SaveChanges();
-                return true;
+                    if (userId == 0 || string.IsNullOrEmpty(message))
+                        return false;
+
+                    await ctx.DtCommands.AddAsync(new DtCommand()
+                    {
+                        UserId = userId,
+                        Message = message,
+                        IntervalTime = intervalTime,
+                        Auto = auto,
+                        CreatedBy = userId,
+                        CreatedDate = DateTime.Now
+                    });
+                    ctx.SaveChanges();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
             }
         }
 
@@ -68,19 +75,25 @@ namespace BusinessLayer
         {
             using (var ctx = new YamurDbContext())
             {
-                if (userId == 0)
-                    return $"User not found Id : {userId}";
+                try 
+                {
+                    if (userId == 0)
+                        return $"User not found Id : {userId}";
 
-                if (commandId == 0)
-                    return $"Invalid Command Id : {commandId}";
+                    if (commandId == 0)
+                        return $"Invalid Command Id : {commandId}";
 
-                DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == commandId).FirstOrDefaultAsync();
-                if (command == null)
-                    return $"Command Id : {commandId} not found";
+                    DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == commandId).FirstOrDefaultAsync();
+                    if (command == null)
+                        return $"Command Id : {commandId} not found";
 
-                command.Message = message;
-                ctx.SaveChanges();
-
+                    command.Message = message;
+                    ctx.SaveChanges();
+                }
+                catch(Exception e) 
+                {
+                    return e.Message;
+                }
                 return "Successfully updated";
             }
         }
@@ -89,19 +102,25 @@ namespace BusinessLayer
         {
             using (var ctx = new YamurDbContext())
             {
-                if (userId == 0)
-                    return $"User not found Id : {userId}";
+                try 
+                {
+                    if (userId == 0)
+                        return $"User not found Id : {userId}";
 
-                if (commandId == 0)
-                    return $"Invalid Command Id : {commandId}";
+                    if (commandId == 0)
+                        return $"Invalid Command Id : {commandId}";
 
-                DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == commandId).FirstOrDefaultAsync();
-                if (command == null)
-                    return $"Command Id : {commandId} not found";
+                    DtCommand? command = await ctx.DtCommands.Where(q => q.CommandId == commandId).FirstOrDefaultAsync();
+                    if (command == null)
+                        return $"Command Id : {commandId} not found";
 
-                command.Deleted = true;
-                ctx.SaveChanges();
-
+                    command.Deleted = true;
+                    ctx.SaveChanges();
+                }
+                catch (Exception e) 
+                {
+                    return e.Message;
+                }
                 return "Successfully deleted";
             }
         }

@@ -17,6 +17,8 @@ public partial class DtCommand
 
     public string? Receiver { get; set; }
 
+    public DateTime? CommandDate { get; set; }
+
     public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }
