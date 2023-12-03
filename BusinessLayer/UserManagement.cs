@@ -22,25 +22,44 @@ namespace BusinessLayer
             }
         }
 
+        public static bool UserExist(int userId) 
+        {
+            using (var ctx = new YamurDbContext())
+            {
+                return ctx.DtUsers.Any(q => q.UserId == userId);
+            }
+        }
+
         public static async Task<bool> Register(string username, string password)
         {
             using (var ctx = new YamurDbContext())
             {
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                    return false;
-
-
-                // password Hashing & Salt
-
-                ctx.DtUsers.Add(new DtUser()
+                try 
                 {
-                    Username = username,
-                    Token = password,
-                    CreatedDate = DateTime.Now
-                });
-                ctx.SaveChanges();
+                    if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                        return false;
 
-                return true;
+                    // password Hashing & Salt
+                    DtUser user = new()
+                    {
+                        Username = username,
+                        Token = password,
+                        CreatedDate = DateTime.Now
+                    };
+                    ctx.DtUsers.Add(user);
+                    ctx.SaveChanges();
+
+                    var addUserCredit = await CreditManagement.CreateCredit(user.UserId);
+                    if (!addUserCredit)
+                        return false;
+
+                    return true;
+
+                }
+                catch (Exception e) 
+                {
+                    return false;
+                }
             }
         }
 

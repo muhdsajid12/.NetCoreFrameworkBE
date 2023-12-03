@@ -86,6 +86,18 @@ namespace YamurBEPOC.Controllers
                 return new Result() { Success = true, Message = ex.Message };
             }
         }
+
+        // POST: api/Insert
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("refresh")]
+        public async Task<Result> RefreshCreditUser([FromBody] string userToken, int userId)
+        {
+            var res = new Result();
+
+            res.Message = await CreditManagement.RefreshCredit(userId);
+
+            return res;
+        }
     }
 
     public class Result 
