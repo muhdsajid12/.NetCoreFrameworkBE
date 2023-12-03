@@ -14,7 +14,7 @@ IConfigurationRoot config = new ConfigurationBuilder()
 var settings = config.GetRequiredSection("Settings").Get<Dictionary<string, string?>>();
 
 // TODO - Get list of commands
-Dictionary<double, int> commands = await GetCommands();
+Dictionary<double, int> commands = await CommandManagement.GetIntervalCommandList();
 
 // Set the Time Interval order by the time duration.
 // Send Message
@@ -28,19 +28,12 @@ foreach(var command in commands)
 int interval = 60000; // 60,000 milliseconds = 1 minute
 
 // Create a timer that calls the specified method every 'interval' milliseconds
-Timer timer = new Timer(state => WriteSomething(), null, 0, interval);
+Timer timer = new Timer(state => { WriteSomething(); }, null, 0, interval);
 
-//Console.WriteLine("Press Enter to stop the application.");
-//Console.ReadLine();
 
+// Test
 void WriteSomething()
 {
     Console.WriteLine("1 minute has passed");
-}
-
-async Task<Dictionary<double, int>> GetCommands()
-{
-    return await CommandManagement.GetIntervalCommandList();
-
 }
 
