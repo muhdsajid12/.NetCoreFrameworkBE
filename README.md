@@ -1,6 +1,6 @@
 # .NETCore Framework BE (WIP)
 
-## .Net Core Framework Simple Architecture Microservices
+## .Net Core Framework Layered Architecture Microservices
 1. .Net 6
 2. Console Application (.Net 6)
 3. EFCore
